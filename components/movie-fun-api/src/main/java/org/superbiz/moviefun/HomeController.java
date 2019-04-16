@@ -33,12 +33,16 @@ public class HomeController {
     }
 
 
-
     @GetMapping("/setup")
     public String setup(Map<String, Object> model) {
-        for (MovieInfo movie : movieFixtures.load()) {
-            moviesClient.addMovie(movie);
+
+        if (moviesClient.countAll() == 0) {
+            for (MovieInfo movie : movieFixtures.load()) {
+                moviesClient.addMovie(movie);
+            }
+
         }
+
 
         for (AlbumInfo album : albumFixtures.load()) {
             albumClient.addAlbum(album);
@@ -50,3 +54,4 @@ public class HomeController {
         return "setup";
     }
 }
+
