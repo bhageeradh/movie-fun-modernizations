@@ -1,0 +1,16 @@
+applications:
+  - name: movie-fun-app
+    path: applications/movie-fun-app/build/libs/movie-fun-app-1.1.0-SNAPSHOT.war
+    buildpacks:
+      - java_buildpack_offline
+    disk_quota: 1G
+    env:
+      JAVA_OPTS: -Dlogging.level.org.springframework=DEBUG
+      ALBUMS_URL: album-service-reflective-oribi.apps.evans.pal.pivotal.io
+      MOVIES_URL: movie-service-reflective-oribi.apps.evans.pal.pivotal.io
+    instances: 1
+    memory: 1G
+    routes:
+      - route: movie-fun-app-reflective-oribi.apps.evans.pal.pivotal.io
+    services:
+      - photo-storage

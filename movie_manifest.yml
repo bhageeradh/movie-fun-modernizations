@@ -1,0 +1,44 @@
+applications:
+
+  - name: album-service
+    path: applications/album-service/build/libs/album-service-1.1.0-SNAPSHOT.jar
+    buildpacks:
+      - java_buildpack_offline
+    disk_quota: 1G
+    env:
+      JAVA_OPTS: -Dlogging.level.org.springframework=DEBUG
+    instances: 1
+    memory: 1G
+    routes:
+      - route: album-service-app-oribi.apps.evans.pal.pivotal.io
+    services:
+      - photo-storage
+      - albums-database
+  - name: movie-service
+    path: applications/movie-service/build/libs/movie-service-1.1.0-SNAPSHOT.jar
+    buildpacks:
+      - java_buildpack_offline
+    disk_quota: 1G
+    env:
+      JAVA_OPTS: -Dlogging.level.org.springframework=DEBUG
+    instances: 1
+    memory: 1G
+    routes:
+      - route: movie-service-app-oribi.apps.evans.pal.pivotal.io
+    services:
+      - movies-mysql
+  - name: movie-fun-app
+    path: applications/movie-fun-app/build/libs/movie-fun-app-1.1.0-SNAPSHOT.war
+    buildpacks:
+      - java_buildpack_offline
+    disk_quota: 1G
+    env:
+      JAVA_OPTS: -Dlogging.level.org.springframework=DEBUG
+      ALBUMS_URL: https://album-service-app-oribi.apps.evans.pal.pivotal.io/albums
+      MOVIES_URL: https://movie-service-app-oribi.apps.evans.pal.pivotal.io/movies
+    instances: 1
+    memory: 1G
+    routes:
+      - route: movie-fun-app-app-oribi.apps.evans.pal.pivotal.io
+    services:
+      - photo-storage
